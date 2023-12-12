@@ -1,0 +1,51 @@
+#ASSIGNMENT 1 - IMPORT & CREATE DECORATOR
+from contextlib import contextmanager
+
+@contextmanager
+#ASSIGNMENT 2 - CREATE GENERATOR FUNCTION WITH OPEN FUNCTION
+def generic(card_type, sender_name, recipient):
+  card_file = open(card_type, 'r')
+  ordered_card = open(f'{sender_name}_file_name.txt', 'w')
+#ASSIGNMENT 3 - TRY & FINALLY STATEMENTS
+  try:
+    ordered_card.write(f'Dear {recipient}, \n')
+    ordered_card.write(card_file.read())
+    ordered_card.write(f'\nSincerely, {sender_name}')
+    yield ordered_card
+  #ASSIGNMENT 4 - CLOSE FILE
+  finally:
+    card_file.close()
+    ordered_card.close()
+
+#ASSIGNMENT 5 - TEST RUN
+with generic("thankyou_card.txt", "Mwenda", "Amanda") as file:
+  print('Card Generated!')
+
+#ASSIGNMENT 6 - OPEN AND READ FILE CREATED
+with open('Mwenda_file_name.txt') as card_order:
+  print(card_order.read())
+
+#ASSIGNMENT 7 -- CREATE PERSONALIZED CLASS
+class Personalized:
+  #ASSIGNMENT 8 - CREATE INIT
+  def __init__(self, sender, receiver):
+    self.sender = sender
+    self.receiver = receiver
+    self.open_file = open(f'{sender}_personalized.txt', 'w')
+  #ASSIGNMENT 9 - CREATE ENTER
+  def __enter__(self):
+    self.open_file.write(f'Dear {self.receiver},')
+    return self.open_file
+  #ASSIGNMENT 10 - CREATE EXIT
+  def __exit__(self, *exc):
+    self.open_file.write(f'Sincerely, {self.sender}')
+    self.open_file.close()
+
+#ASSIGNMENT 11 - TEST RUN OF NEW CLASS
+with Personalized("John", "Michael") as new_order:
+  new_order.write('I am so proud of you! Being your friend for all these years has been nothing but a blessing. I don’t say it often but I just wanted to let you know that you inspire me and I love you! All the best. Always.')
+
+#ASSIGNMENT 12 - NESTED WITH STATEMENT ON NEW ORDER
+with Personalized('Josiah', 'Remy') as card_order:
+  with Personalized('Josiah', 'Esther') as sister_card:
+    sister_card.write("Happy Birthday!! I love you to the moon and back. Even though you’re a pain sometimes, you’re a pain I can't live without. I am incredibly proud of you and grateful to have you as a sister. Cheers to 25!! You’re getting old!")
